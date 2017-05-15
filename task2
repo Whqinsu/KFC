@@ -1,0 +1,59 @@
+一、==与equals的区别（参考传智播客）
+
+　　1. == 是一个运算符。
+　　2.Equals则是string对象的方法，可以.（点）出来。
+　　
+　　我们比较无非就是这两种 1、基本数据类型比较  2、引用对象比较
+　　1、基本数据类型比较
+　　==和Equals都比较两个值是否相等。相等为true 否则为false；
+　　
+　　2、引用对象比较
+　　==和Equals都是比较栈内存中的地址是否相等 。相等为true 否则为false；
+　　
+　　需注意几点：
+　　1、string是一个特殊的引用类型。对于两个字符串的比较，不管是 == 和 Equals 这两者比较的都是字符串是否相同；
+　　2、当你创建两个string对象时，内存中的地址是不相同的，你可以赋相同的值。
+　　所以字符串的内容相同。引用地址不一定相同，（相同内容的对象地址不一定相同），但反过来却是肯定的；
+　　3、基本数据类型比较(string 除外) == 和 Equals 两者都是比较值；
+  
+ 二、 比较浅拷贝、深拷贝、完全拷贝（参考传智播客）
+ 浅拷贝，只是对指针的拷贝，拷贝后两个指针指向同一个内存空间。
+ 深拷贝不但对指针进行拷贝，而且对指针指向的内容进行拷贝，经深拷贝后的指针是指向两个不同地址的指针。
+ 
+ class string
+{
+ char *m_str;
+
+ public:
+  string(char *s）{
+         m_str=s;
+}
+ string(){};
+
+String & operator=(const string s)
+{
+    m_str=s.m_str;
+   return *this
+}
+
+};
+
+int main()
+{
+string s1("abc"),s2;
+s2=s1;
+cout<<s2.m_str;
+}
+
+上面的重载其是就是实现了浅拷贝原因。是由于对象之中含有指针数据类型.s1,s2恰好指向同一各内存。所以是浅拷贝。而你如果修改一下原来的程序：
+string & operator=(const string &s)
+{
+     if(strlen(m_str)!=strlen(s.m_str))
+         m_str=new char[strlen(s.m_str)+1];
+
+     if(*this!=s)
+         strcopy(m_str,s.m_str);
+return *this;
+
+}
+这样你就实现了深拷贝，原因是你为被赋值对象申请了一个新的内存所以就是深拷贝。
