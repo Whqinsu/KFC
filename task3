@@ -1,0 +1,3 @@
+一、用迭代器与组合模式实现n！
+Function（int n）{ return (n<=1?n:Function(n-1)*n);}
+二、合成模式在XML Schema实际中的应用
