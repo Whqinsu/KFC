@@ -44,7 +44,7 @@ public abstract class BankTemplateMethod
 } 
 
 
-
+//具体子类
 public class Deposit extends BankTemplateMethod
 {
 	public void transact()
@@ -70,6 +70,8 @@ public class Withdraw extends BankTemplateMethod
 	}
 }
 
+
+//客户端测试类
 public class Client
 {
 	public static void main(String a[])
@@ -81,8 +83,12 @@ public class Client
 	}
 }
 
-
-
+//配置文件config.xml
+<?xml version ="1.0"?>
+<config>
+<classname>Deposit</classname>//表示存款，classname中定义的内容还可以是取款，转账。
+</config>
+//这样做的优点在于不用改源代码，只需要根据需要更改配置文件来实现各项功能。
 
 
 
