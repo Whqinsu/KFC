@@ -1,2 +1,69 @@
 //分析观察者模式部分代码，附一篇小论文.
 //说明开源代码链接，任务，开发者介绍，模块关系，符合观察者模式的代码，多用uml图少用代码。
+//设计模式观察者模式
+https://github.com/Wang-Jun-Chao/Java-Design-Pattern/blob/master/14-%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/14-%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F.iml
+    
+    
+    
+    abstract class Subject {  
+        private Vector<Observer> obs = new Vector<Observer>();  
+      
+        public void addObserver(Observer obs){  
+           this.obs.add(obs);  
+        }  
+      
+        public void delObserver(Observer obs){  
+           this.obs.remove(obs);  
+        }  
+      
+        protected void notifyObserver(){  
+           for(Observer o: obs){  
+               o.update();  
+           }  
+        }  
+      
+        public abstract void doSomething();  
+    }  
+
+    class ConcreteSubject extends Subject {  
+        public void doSomething(){  
+           System.out.println("被观察者事件反生");  
+           this.notifyObserver();  
+        }  
+    }  
+
+
+    interface Observer {  
+        public void update();  
+    }  
+
+
+    class ConcreteObserver1 implements Observer {  
+        public void update() {  
+           System.out.println("观察者1收到信息，并进行处理。");  
+        }  
+    }  
+
+
+
+    class ConcreteObserver2 implements Observer {  
+        public void update() {  
+           System.out.println("观察者2收到信息，并进行处理。");  
+        }  
+    }  
+
+
+    public class Client {  
+        public static void main(String[] args){  
+           Subject sub = new ConcreteSubject();  
+           sub.addObserver(new ConcreteObserver1()); //添加观察者1  
+           sub.addObserver(new ConcreteObserver2()); //添加观察者2  
+           sub.doSomething();  
+        }  
+    }  
+
+运行结果
+
+    被观察者事件反生  
+    观察者1收到信息，并进行处理。  
+    观察者2收到信息，并进行处理。 
