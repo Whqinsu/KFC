@@ -19,3 +19,104 @@ int fun(int n)
 }
 
 二、合成模式在XML Schema实际中的应用
+
+//抽象类BankTemplateMethod
+public abstract class BankTemplateMethod
+{
+    public void takeNumber()
+	{
+		System.out.println("取号排队。");
+	}
+	
+	public abstract void transact();
+	
+	public void evaluate()
+	{
+		System.out.println("反馈评分。");
+	}
+
+    public void process()
+    {
+        this.takeNumber();
+        this.transact();//利用xml辅助文件实现存款，取款，转账
+        this.evaluate();
+    }
+} 
+
+
+
+public class Deposit extends BankTemplateMethod
+{
+	public void transact()
+	{
+		System.out.println("存款");		
+	}
+}
+
+public class Transfer extends BankTemplateMethod
+{
+	public void transact()
+	{
+		System.out.println("转账");		
+	}
+}
+
+
+public class Withdraw extends BankTemplateMethod
+{
+	public void transact()
+	{
+		System.out.println("取款");		
+	}
+}
+
+public class Client
+{
+	public static void main(String a[])
+	{
+		BankTemplateMethod bank;
+		bank=(BankTemplateMethod)XMLUtil.getBean();
+		bank.process();
+		System.out.println("---------------------------------------");
+	}
+}
+
+
+
+
+
+
+import javax.xml.parsers.*;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+import java.io.*;
+public class XMLUtil
+{
+//该方法用于从XML配置文件中提取具体类类名，并返回一个实例对象
+	public static Object getBean()
+	{
+		try
+		{
+			//创建文档对象
+			DocumentBuilderFactory dFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = dFactory.newDocumentBuilder();
+			Document doc;							
+			doc = builder.parse(new File("config.xml")); 
+		
+			//获取包含类名的文本节点
+			NodeList nl = doc.getElementsByTagName("className");
+            Node classNode=nl.item(0).getFirstChild();
+            String cName=classNode.getNodeValue();
+            
+            //通过类名生成实例对象并将其返回
+            Class c=Class.forName(cName);
+	  	    Object obj=c.newInstance();
+            return obj;
+           }   
+           	catch(Exception e)
+           	{
+           		e.printStackTrace();
+           		return null;
+           	}
+		}
+}
